@@ -1,11 +1,9 @@
 package com.org.customer.model;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
 import jakarta.persistence.*;
-
 
 @Getter
 @Setter
@@ -36,10 +34,13 @@ public class CustomerMaster {
 
     @Column
     private String email;
-    
+
+    @Column
+    private String phone;
+
     @Column
     private String password;
-    
+
     @Column
     private String confirmPassword;
 
