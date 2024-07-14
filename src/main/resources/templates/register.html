@@ -5,49 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // jQuery function to handle form submission
         $(document).ready(function() {
-    $("#registerForm").submit(function(event) {
-        event.preventDefault(); // Prevent the form from submitting via the browser
+            $("#registerForm").submit(function(event) {
+                event.preventDefault(); // Prevent the form from submitting via the browser
 
-        var formData = {    
-            firstName: $("#firstName").val(),
-            lastName: $("#lastName").val(),
-            street: $("#street").val(),
-            address: $("#address").val(),
-            city: $("#city").val(),
-            state: $("#state").val(),
-            email: $("#email").val(),
-            phone: $("#phone").val(),
-            password: $("#password").val(),
-            confirmPassword: $("#confirmPassword").val()
-        };
+                // Collect form data
+                var formData = {
+                    firstName: $("#firstName").val(),
+                    lastName: $("#lastName").val(),
+                    street: $("#street").val(),
+                    address: $("#address").val(),
+                    city: $("#city").val(),
+                    state: $("#state").val(),
+                    email: $("#email").val(),
+                    phone: $("#phone").val(),
+                    password: $("#password").val(),
+                    confirmPassword: $("#confirmPassword").val()
+                };
 
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:1026/customer/register",
-            data: JSON.stringify(formData),
-            contentType: "application/json",
-            success: function(response) {
-                if(response) {
-                    alert("Customer Registered");
-                    window.location.href = "login.html"; // Redirect to login page
-                } else {
-                    alert("Error registering customer.");
-                }
-            },
-            error: function(error) {
-                alert("Error: " + error.responseText);
-            }
+                // AJAX request to register API
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:1026/customer/register",
+                    data: JSON.stringify(formData),
+                    contentType: "application/json",
+                    success: function(response) {
+                        if(response) {
+                            alert("Customer Registered");
+                            window.location.href = "login.html"; // Redirect to login page
+                        } else {
+                            alert("Error registering customer.");
+                        }
+                    },
+                    error: function(error) {
+                        alert("Error: " + error.responseText);
+                    }
+                });
+            });
         });
-    });
-});
-
     </script>
+    <style>
+        /* styles.css */
+
+/* Container styles */
+.container {
+    width: 80%;
+    margin: 20px auto;
+}
+
+/* Table styles */
+#customerTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#customerTable th, #customerTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+#customerTable th {
+    background-color: #f2f2f2;
+}
+
+#customerTable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#customerTable tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button styles */
+.editBtn, .deleteBtn {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.editBtn:hover, .deleteBtn:hover {
+    background-color: #0056b3;
+}
+
+/* Form container styles */
+.form-container {
+    width: 50%;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* Form styles */
+form {
+    max-width: 100%;
+}
+
+form h2 {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: inline-block;
+    width: 120px;
+    margin-bottom: 10px;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form input[type="phone"] {
+    width: calc(100% - 130px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+form button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+    </style>
 </head>
 <body>
     <div class="form-container">
+        <!-- Registration form -->
         <form id="registerForm">
             <h2>Register</h2>
             <label for="firstName">First Name:</label>

@@ -19,4 +19,6 @@ public interface CustomerService {
 	CustomerMaster getCustomerById(Integer customerId);
 
 	List<CustomerMaster> searchCustomers(String firstName, String city, String phone);
+
+	boolean syncCustomers();
 }

@@ -5,27 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Details</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        // jQuery function to handle page events
         $(document).ready(function() {
-            loadCustomers();
+            loadCustomers(); // Load customer data on page load
 
+            // Navigate to registration page
             $("#addCustomerBtn").click(function() {
                 window.location.href = "register.html";
             });
 
+            // Handle search button click
             $("#searchBtn").click(function() {
                 const searchType = $("#searchType").val();
                 const searchText = $("#searchText").val();
                 searchCustomers(searchType, searchText);
             });
 
+            // Handle sync button click
+            $("#syncBtn").click(function() {
+                syncCustomers();
+            });
+
+            // Load all customers
             function loadCustomers() {
                 $.ajax({
                     type: "GET",
                     url: "http://localhost:1026/customer/getAllCustomers",
                     success: function(response) {
-                        populateTable(response);
+                        populateTable(response); // Populate table with customer data
                     },
                     error: function(error) {
                         alert("Error: " + error.responseText);
@@ -33,6 +43,7 @@
                 });
             }
 
+            // Populate customer table with data
             function populateTable(customers) {
                 let tableBody = $("#customerTable tbody");
                 tableBody.empty();
@@ -51,11 +62,13 @@
                     tableBody.append(row);
                 });
 
+                // Handle edit button click
                 $(".editBtn").click(function() {
                     const customerId = $(this).data("id");
                     editCustomer(customerId);
                 });
 
+                // Handle delete button click
                 $(".deleteBtn").click(function() {
                     const customerId = $(this).data("id");
                     if (confirm("Are you sure you want to delete this customer?")) {
@@ -64,18 +77,19 @@
                 });
             }
 
+            // Placeholder for editing customer details
             function editCustomer(customerId) {
-                // Placeholder for editing customer details in the table (optional step for UI)
                 alert("Editing customer with ID: " + customerId);
             }
 
+            // Delete customer
             function deleteCustomer(customerId) {
                 $.ajax({
                     type: "DELETE",
                     url: `http://localhost:1026/customer/delete/${customerId}`,
                     success: function(response) {
                         alert("Customer deleted successfully");
-                        loadCustomers();
+                        loadCustomers(); // Reload customer data
                     },
                     error: function(error) {
                         alert("Error: " + error.responseText);
@@ -83,15 +97,31 @@
                 });
             }
 
+            // Search for customers based on criteria
             function searchCustomers(searchType, searchText) {
                 $.ajax({
                     type: "GET",
                     url: `http://localhost:1026/customer/search?${searchType}=${searchText}`,
                     success: function(response) {
-                        populateTable(response);
+                        populateTable(response); // Populate table with search results
                     },
                     error: function(error) {
                         alert("Error: " + error.responseText);
+                    }
+                });
+            }
+
+            // Sync customers with remote API
+            function syncCustomers() {
+                $.ajax({
+                    type: "POST",
+                    url: "http://localhost:1036/customer/sync",
+                    success: function(response) {
+                        alert("Customers synchronized successfully");
+                        loadCustomers(); // Reload customer data after sync
+                    },
+                    error: function(error) {
+                        alert("Error syncing customers: " + error.responseText);
                     }
                 });
             }
@@ -100,6 +130,7 @@
 </head>
 <body>
     <div class="container">
+        <!-- Button to add a new customer -->
         <button id="addCustomerBtn">Add Customer</button>
         <div class="search-container">
             <label for="searchType">Search By:</label>
@@ -111,6 +142,9 @@
             <input type="text" id="searchText" placeholder="Search...">
             <button id="searchBtn">Search</button>
         </div>
+        <!-- Sync button -->
+        <button id="syncBtn">Sync</button>
+        <!-- Customer table -->
         <table id="customerTable" border="1">
             <thead>
                 <tr>

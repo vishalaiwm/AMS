@@ -19,6 +19,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+    // Create Customer
     @PostMapping(value = "/register")
     public ResponseEntity<Boolean> createCustomer(@RequestBody CustomerReqDto customerReqDto) {
         Boolean flag = customerService.createCustomer(customerReqDto);
@@ -29,6 +30,7 @@ public class CustomerController {
         }
     }
 
+    // Login Customer
     @PostMapping(value = "/login")
     public ResponseEntity<?> loginCustomer(@RequestBody CustomerReqDto customerReqDto) {
         CustomerMaster customer = customerService.loginCustomer(customerReqDto.getEmail(),
@@ -40,6 +42,7 @@ public class CustomerController {
         }
     }
 
+    // Update Customer
     @PutMapping(value = "/update")
     public ResponseEntity<Boolean> updateCustomer(@RequestBody CustomerReqDto customerReqDto) {
         Boolean flag = customerService.updateCustomer(customerReqDto);
@@ -50,6 +53,7 @@ public class CustomerController {
         }
     }
 
+    // Delete Customer
     @DeleteMapping(value = "/delete/{customerId}")
     public ResponseEntity<Boolean> deleteCustomer(@PathVariable Integer customerId) {
         Boolean flag = customerService.deleteCustomer(customerId);
@@ -60,12 +64,14 @@ public class CustomerController {
         }
     }
 
+    // Get All Customers
     @GetMapping(value = "/getAllCustomers")
     public ResponseEntity<List<CustomerMaster>> getAllCustomers() {
         List<CustomerMaster> list = customerService.getAllCustomers();
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    // Get Customer By ID
     @GetMapping(value = "/getCustomerById/{customerId}")
     public ResponseEntity<CustomerMaster> getCustomerById(@PathVariable Integer customerId) {
         CustomerMaster customer = customerService.getCustomerById(customerId);
@@ -76,6 +82,7 @@ public class CustomerController {
         }
     }
 
+    // Search Customers
     @GetMapping(value = "/search")
     public ResponseEntity<List<CustomerMaster>> searchCustomers(
             @RequestParam(value = "firstName", required = false) String firstName,
@@ -84,5 +91,15 @@ public class CustomerController {
 
         List<CustomerMaster> list = customerService.searchCustomers(firstName, city, phone);
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/sync")
+    public ResponseEntity<String> syncCustomers() {
+        boolean result = customerService.syncCustomers(); // Implement this method in service
+        if (result) {
+            return new ResponseEntity<>("Customers synchronized successfully", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Failed to sync customers", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
