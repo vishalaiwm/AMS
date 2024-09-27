@@ -1,4 +1,4 @@
-# Customer System
+# Attendance System
 
 This project is a simple customer system implemented using Spring Boot for the backend and HTML/CSS/JavaScript for the frontend.
 
